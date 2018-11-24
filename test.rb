@@ -26,15 +26,15 @@ while true do
                 puts sunset
 	elsif Time.now < sunrise
 		puts 'it is nighttime'
-                RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'on', fast: 'true', color: 'red'}, headers: {Authorization: auth})
-                sleep 1
+                RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'on', fast: 'true', color: 'yellow'}, headers: {Authorization: auth})
+                sleep 5
                 RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'off', fast: 'true'}, headers: {Authorization: auth})
 	else
 		puts 'it is daytime'
-		RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'on', fast: 'true', color: 'green'}, headers: {Authorization: auth})
-                sleep 1
+		RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'on', fast: 'true', color: 'purple'}, headers: {Authorization: auth})
+                sleep 5
                 RestClient::Request.execute(method: :put, url: "https://api.lifx.com/v1/lights/d073d5301ba7/state", payload: {power: 'off', fast: 'true'}, headers: {Authorization: auth})
 	end
-	sleep 10
+	sleep 5
 end
 
