@@ -13,8 +13,10 @@ lifx_config = {}
 lifx_config['power'] = 'on'
 lifx_config['fast'] = 'true'
 
-sunrise = tz.sunrise
-sunset = tz.sunset
+# Modifying so lights turn on 30 minutes
+# before sunset and 30 minutes after sunset
+sunrise = tz.sunrise + 1800
+sunset = tz.sunset - 1800
 
 puts "Sunrise: #{sunrise}"
 puts "Sunset: #{sunset}"

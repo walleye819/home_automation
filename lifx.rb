@@ -1,6 +1,8 @@
 class Lifx
 	def initialize
-		@auth = "Bearer #{ENV['lifx_token']}"
+		token = ENV['lifx_token']
+		abort 'lifx_token environment variable not found, exiting now!' if token.nil?
+		@auth = "Bearer #{token}"
 		@lifx_url = "https://api.lifx.com/v1/lights/"	
 	end
 
