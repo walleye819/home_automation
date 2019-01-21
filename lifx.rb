@@ -35,7 +35,7 @@ class Lifx
 			else
 				response = rest_client[path].send(action)
 			end
-		rescue RestClient::ExceptionWithResponse => err
+		rescue RestClient::ExceptionWithResponse, SocketError, Errno::ECONNREFUSED, Timeout::Error  => err
 			puts("Found and handled exception in lifx.rb when calling API: #{err}")
 		rescue => err
 			abort("Unhandled exception found in lifx.rb when calling API: #{err}")
