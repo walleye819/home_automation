@@ -1,5 +1,5 @@
-load 'time_zone.rb'
-load 'lifx.rb'
+load 'lib/time_zone.rb'
+load 'lib/lifx.rb'
 require 'rest-client'
 require 'json'
 

@@ -11,4 +11,4 @@ RUN apt-get update
 RUN apt-get install -y apt-utils ruby-dev libgmp-dev build-essential
 RUN bundle install
 
-CMD ["ruby", "test.rb"]
+CMD ["ruby", "run.rb"]
