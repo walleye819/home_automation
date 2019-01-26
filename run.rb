@@ -14,7 +14,7 @@ lifx_config['power'] = 'on'
 lifx_config['fast'] = 'true'
 
 # Modifying so lights turn on 30 minutes
-# before sunset and 30 minutes after sunset
+# before sunset and off 30 minutes after sunset
 sunrise = tz.sunrise + 1800
 sunset = tz.sunset - 1800
 
@@ -34,9 +34,12 @@ while true do
 		puts 'new day, checking timezones for tomorrow'
                 tz.get_sunrise_sunset(Date.today + 1)
 
-                sunrise = tz.sunrise
-                sunset = tz.sunset
-                puts sunrise
+                
+		# Modifying so lights turn on 30 minutes
+		# before sunset and off 30 minutes after sunset
+		sunrise = tz.sunrise + 1800
+		sunset = tz.sunset - 1800
+		puts sunrise
                 puts sunset
 	end	
 	if Time.now < sunrise
