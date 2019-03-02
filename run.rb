@@ -18,6 +18,7 @@ lifx_config['fast'] = 'true'
 sunrise = tz.sunrise + 1800
 sunset = tz.sunset - 1800
 
+puts "Current time: #{Time.now.utc}"
 puts "Sunrise: #{sunrise}"
 puts "Sunset: #{sunset}"
 
@@ -30,7 +31,7 @@ abort('no lights found!') if all_lights.nil?
 puts "Found list of lights: #{all_lights.join(', ')}"
 
 while true do
-	if Time.now > sunrise && Time.now > sunset
+	if Time.now.utc > sunrise && Time.now.utc > sunset
 		puts 'new day, checking timezones for tomorrow'
                 tz.get_sunrise_sunset(Date.today + 1)
 
@@ -42,7 +43,7 @@ while true do
 		puts sunrise
                 puts sunset
 	end	
-	if Time.now < sunrise
+	if Time.now.utc < sunrise
 		puts 'it is nighttime, turning on all lights'
 		lifx_config['power'] = 'on'
 		all_lights.each  do |light_id|

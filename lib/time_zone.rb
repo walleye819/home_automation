@@ -9,9 +9,11 @@ class TimeZone
 	def get_sunrise_sunset(date = Date.today)
 		json = RestClient::Request.execute(method: :get, url: "https://api.sunrise-sunset.org/json?lat=#{@latitude}&lng=#{@longitude}&date=#{date}")
 		response = JSON.parse(json)
-		# puts response
-		@sunrise =  Time.parse("#{date} #{response['results']['sunrise']} UTC").localtime
-		@sunset = Time.parse("#{date} #{response['results']['sunset']} UTC").localtime
+		puts response
+		puts Time.parse("#{response['results']['sunrise']} UTC").localtime	
+		puts Time.parse("#{response['results']['sunset']} UTC").localtime	
+		@sunrise =  Time.parse("#{date} #{response['results']['sunrise']} UTC")# .localtime
+		@sunset = Time.parse("#{date + 1} #{response['results']['sunset']} UTC")# .localtime
 	end
 
 	def sunrise

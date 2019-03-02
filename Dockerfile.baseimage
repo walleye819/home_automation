@@ -1,0 +1,11 @@
+FROM hypriot/rpi-ruby
+MAINTAINER matt@tuma.cc
+
+RUN apt-get update -y
+RUN apt-get install -y apt-utils ruby-dev libgmp-dev build-essential
+
+ENV TZ=America/Chicago
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY ./Gemfile ./
+RUN bundle install
