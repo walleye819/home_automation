@@ -1,4 +1,4 @@
-FROM walleye819/rpi-iot:0.3
+FROM walleye819/rpi-iot:0.4
 MAINTAINER matt@tuma.cc
 
 COPY . /home_automation/
