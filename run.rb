@@ -2,6 +2,7 @@ load 'lib/time_zone.rb'
 load 'lib/lifx.rb'
 load 'lib/logstash.rb'
 load 'application.rb'
+
 require 'rest-client'
 require 'json'
 
