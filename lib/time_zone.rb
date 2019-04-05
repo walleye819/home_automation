@@ -12,8 +12,10 @@ class TimeZone
 		json = RestClient::Request.execute(method: :get, url: url)
 		response = JSON.parse(json)
 		puts response
-		@sunrise =  Time.parse("#{date} #{response['results']['sunrise']} UTC")
-		@sunset = Time.parse("#{date + 1} #{response['results']['sunset']} UTC")
+		# @sunrise =  Time.parse("#{date} #{response['results']['sunrise']} UTC")
+		@sunrise = Time.parse(response['results']['sunrise'])
+		# @sunset = Time.parse("#{date + 1} #{response['results']['sunset']} UTC")
+		@sunset = Time.parse(response['results']['sunset'])
 		puts @sunrise
 		puts @sunset
 	end
