@@ -24,8 +24,8 @@ sunrise = tz.sunrise + 1800
 sunset = tz.sunset - 1800
 
 @logger.log_and_puts("Current time: #{Time.now.utc}")
-@logger.log_and_puts("Sunrise: #{sunrise}")
-@logger.log_and_puts("Sunset: #{sunset}")
+@logger.log_and_puts("Sunrise: #{sunrise.utc}")
+@logger.log_and_puts("Sunset: #{sunset.utc}")
 
 @logger.log_and_puts('getting list of lifx lights')
 
@@ -36,7 +36,7 @@ abort('no lights found!') if all_lights.nil?
 @logger.log_and_puts("Found list of lights: #{all_lights.join(', ')}")
 
 while true do
-	if Time.now.utc > sunrise && Time.now.utc > sunset
+	if Time.now.utc > sunrise.utc && Time.now.utc > sunset.utc
 		@logger.log_and_puts('new day, checking timezones for tomorrow')
                 tz.get_sunrise_sunset(Date.today + 1)
 
@@ -46,10 +46,10 @@ while true do
 		sunrise = tz.sunrise + 1800
 		sunset = tz.sunset - 1800
 		@logger.log_and_puts("Current time: #{Time.now.utc}")
-		@logger.log_and_puts("Sunrise: #{sunrise}")
-		@logger.log_and_puts("Sunset: #{sunset}")	
+		@logger.log_and_puts("Sunrise: #{sunrise.utc}")
+		@logger.log_and_puts("Sunset: #{sunset.utc}")	
 	end	
-	if Time.now.utc < sunrise
+	if Time.now.utc < sunrise.utc
 		@logger.log_and_puts('it is nighttime, turning on all lights')
 		lifx_config['power'] = 'on'
 		all_lights.each  do |light_id|
