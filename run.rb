@@ -45,10 +45,10 @@ while true do
 		# before sunset and off 30 minutes after sunset
 		sunrise = tz.sunrise + 1800
 		sunset = tz.sunset - 1800
-		@logger.log_and_puts("Current time: #{Time.now.utc}")
-		@logger.log_and_puts("Sunrise: #{sunrise.utc}")
-		@logger.log_and_puts("Sunset: #{sunset.utc}")	
-	end	
+	end
+	@logger.log_and_puts("Current time: #{Time.now.utc}")
+	@logger.log_and_puts("Sunrise: #{sunrise.utc}")
+	@logger.log_and_puts("Sunset: #{sunset.utc}")	
 	if Time.now.utc < sunrise.utc
 		@logger.log_and_puts('it is nighttime, turning on all lights')
 		lifx_config['power'] = 'on'
