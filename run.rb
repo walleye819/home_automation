@@ -20,6 +20,8 @@ end
 
 @logger = LoggerIO.new
 
+@logger.log_and_puts('initial app startup')
+
 @logger.log_and_puts('checking today\'s sunrise and sunset')
 
 lifx = Lifx.new
