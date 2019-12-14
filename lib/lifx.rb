@@ -18,7 +18,6 @@ class Lifx
 		response = api_call('get', 'all')
 		return if response.nil?	
 		array =	JSON.parse(response.body)
-		print(array)
 		array.map! {|light| light['id']}
 	end
 
