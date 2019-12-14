@@ -19,7 +19,20 @@ class Lifx
 		return if response.nil?	
 		array =	JSON.parse(response.body)
 		array.map! {|light| light['id']}
-		array.reject! {|id| id == 'd073d5324c3d'}
+	end
+
+	def get_all_lights_detailed
+		response = api_call('get', 'all')
+		return if response.nil?
+		array = JSON.parse(response.body)
+		new_array = []
+		array.each do |light|
+			l = {}
+			l['id'] = light['id']
+			l['group'] = light['group']['name']
+			new_array << l
+		end
+		return new_array		
 	end
 
 	private

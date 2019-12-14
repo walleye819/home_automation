@@ -6,6 +6,14 @@ load 'application.rb'
 require 'rest-client'
 require 'json'
 
+def outside_lights
+	return ['Front', 'Deck', 'Shed', 'Backyard']
+end
+
+def outside_light_colors
+	return ['red', 'green']
+end
+
 def log_times
 	@logger.log_and_puts("Current time: #{Time.now.utc}")
 	@logger.log_and_puts("Sunrise: #{@tz.sunrise.utc}")
@@ -28,14 +36,17 @@ lifx = Lifx.new
 lifx_config = {}
 lifx_config['power'] = 'on'
 lifx_config['fast'] = 'true'
+lifx_config['color'] = 'kelvin:3500'
 
 @logger.log_and_puts('getting list of lifx lights')
 
-all_lights = lifx.get_all_light_ids
+all_lights = lifx.get_all_lights_detailed
 
 abort('no lights found!') if all_lights.nil?
 
 @logger.log_and_puts("Found list of lights: #{all_lights.join(', ')}")
+
+increment = 0
 
 while true do
 	if @tz.nil?
@@ -53,8 +64,13 @@ while true do
 	if Time.now.utc < @tz.sunrise.utc
 		@logger.log_and_puts('it is nighttime, turning on all lights')
 		lifx_config['power'] = 'on'
-		all_lights.each  do |light_id|
-			lifx.modify_light(light_id, lifx_config)
+		all_lights.each_with_index  do |light, index|
+			if outside_lights.include?(light['group'])
+				lifx_config['color'] = outside_light_colors[(index + increment) % outside_light_colors.length()]
+			else
+				lifx_config['color'] = 'kelvin:3500'
+			end
+			lifx.modify_light(light['id'], lifx_config)
                 end
 	else
 		@logger.log_and_puts('it is daytime, turning off all lights')
@@ -62,6 +78,11 @@ while true do
                 all_lights.each  do |light_id|
                         lifx.modify_light(light_id, lifx_config)
                 end
+	end	
+	if increment - 1 == outside_light_colors.length()
+		increment = 0
+	else
+		increment += 1
 	end
 	@logger.log_and_puts('action completed')
 	sleep 60
