@@ -32,7 +32,7 @@ class Lifx
 			l['group'] = light['group']['name']
 			new_array << l
 		end
-		return new_array		
+		return new_array.sort_by { |hsh| hsh['group'] }
 	end
 
 	private

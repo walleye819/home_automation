@@ -75,8 +75,8 @@ while true do
 	else
 		@logger.log_and_puts('it is daytime, turning off all lights')
                 lifx_config['power'] = 'off'
-                all_lights.each  do |light_id|
-                        lifx.modify_light(light_id, lifx_config)
+                all_lights.each  do |light|
+                        lifx.modify_light(light['id'], lifx_config)
                 end
 	end	
 	if increment - 1 == outside_light_colors.length()
