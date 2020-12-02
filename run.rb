@@ -6,12 +6,16 @@ load 'application.rb'
 require 'rest-client'
 require 'json'
 
+def time_delay
+	60
+end
+
 def outside_lights
-	return ['Front', 'Deck', 'Shed', 'Backyard']
+	['Front', 'Deck', 'Shed', 'Backyard']
 end
 
 def outside_light_colors
-	return ['red', 'green']
+	['red', 'green']
 end
 
 def log_times
@@ -49,6 +53,7 @@ abort('no lights found!') if all_lights.nil?
 increment = 0
 
 while true do
+	start_time = Time.now()
 	if @tz.nil?
 		@logger.log_and_puts('checking timezones')	
 		@tz = TimeZone.new
@@ -64,14 +69,25 @@ while true do
 	if Time.now.utc < @tz.sunrise.utc
 		@logger.log_and_puts('it is nighttime, turning on all lights')
 		lifx_config['power'] = 'on'
+		threads = []	
 		all_lights.each_with_index  do |light, index|
+			threads << Thread.new{
 			if outside_lights.include?(light['group'])
-				lifx_config['color'] = outside_light_colors[(index + increment) % outside_light_colors.length()]
+				# puts "found outside light"	
+				# single color	
+				# lifx_config['color'] = outside_light_colors[(index + increment) % outside_light_colors.length()]
+				# multiple colors	
+				lifx.pulse(light['id'], outside_light_colors[(index + increment) % outside_light_colors.length()], outside_light_colors[(index + increment + 1) % outside_light_colors.length()], 5, 20)
 			else
+				# puts "found inside light"	
 				lifx_config['color'] = 'kelvin:3500'
+				lifx.modify_light(light['id'], lifx_config)
 			end
-			lifx.modify_light(light['id'], lifx_config)
-                end
+			# make sure to disable this before enabling colors
+			# lifx.modify_light(light['id'], lifx_config)
+               		} 
+		end
+		threads.each { |thr| thr.join }
 	else
 		@logger.log_and_puts('it is daytime, turning off all lights')
                 lifx_config['power'] = 'off'
@@ -85,6 +101,8 @@ while true do
 		increment += 1
 	end
 	@logger.log_and_puts('action completed')
-	sleep 60
+	run_time = Time.now() - start_time
+	@logger.log_and_puts('Process took ' + run_time.to_s() + ' seconds, sleeping for ' + (time_delay - run_time).to_s() + ' seconds.')	
+	sleep(time_delay - run_time) 
 end
 

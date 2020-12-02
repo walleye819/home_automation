@@ -14,6 +14,15 @@ class Lifx
 		api_call('put', "#{id}/state", payload)
 	end
 
+	def pulse(id, color1, color2, period, cycles)
+		payload = {}
+		payload['color'] = color1
+		payload['from_color'] = color2
+		payload['period'] = period
+		payload['cycles'] = cycles
+		api_call('post', "#{id}/effects/pulse", payload)
+	end
+
 	def get_all_light_ids
 		response = api_call('get', 'all')
 		return if response.nil?	
@@ -52,6 +61,10 @@ class Lifx
 			puts("Found and handled exception in lifx.rb when calling API: #{err}")
 		rescue => err
 			abort("Unhandled exception found in lifx.rb when calling API: #{err}")
+		end
+		if response.headers[:x_ratelimit_remaining].to_i < 20
+			puts 'Only ' + response.headers[:x_ratelimit_remaining] + ' remaining api calls to lifx before the limit is hit (120 per minute), sleeping for 10 seconds'
+			sleep 10
 		end
 		response
 	end
